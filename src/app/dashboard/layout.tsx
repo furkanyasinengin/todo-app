@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SignOutButton } from "@/components/signout-button";
 
 export const metadata = {
   title: "Todo App | Dashboard",
@@ -14,7 +15,7 @@ export default function DashboardLayout({
   return (
     <div className="flex h-screen w-full bg-muted/40">
       <aside className="hidden w-64 flex-col border-r bg-background md:flex">
-        <div className="flex h-14 items-center justify-center border-b font-bold">
+        <div className="flex h-16 items-center justify-center border-b font-bold">
           LOGO
         </div>
         <nav className="flex-1 p-4">
@@ -32,11 +33,14 @@ export default function DashboardLayout({
         </nav>
       </aside>
       <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-background px-6 justify-between">
+        <header className="flex h-16 items-center gap-4 border-b bg-background px-6 justify-between">
           <div className="font-semibold text-foreground">
             Hoşgeldin, Kullanıcı
           </div>
-          <ThemeToggle />
+          <div className="flex flex-row gap-2">
+            <ThemeToggle />
+            <SignOutButton />
+          </div>
         </header>
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>

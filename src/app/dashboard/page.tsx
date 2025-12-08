@@ -4,8 +4,18 @@ import { redirect } from "next/navigation";
 import { verifyJwt } from "@/lib/jwt";
 import { getTodoList } from "@/services/todo.service";
 import CreateTodoForm from "@/components/create-todo-form";
+import TodoItem from "@/components/todo-item";
+import TodoFilter from "@/components/todo-filter";
 
-export default async function DashboardPage() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function DashboardPage(props: {
+  searchParams: SearchParams;
+}) {
+  const params = await props.searchParams;
+  const search = typeof params.search === "string" ? params.search : undefined;
+  const priority =
+    typeof params.priority === "string" ? params.priority : undefined;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -15,7 +25,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const todos = await getTodoList(verifiedToken.id as string);
+  const todos = await getTodoList(verifiedToken.id as string, search, priority);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -28,6 +38,7 @@ export default async function DashboardPage() {
         </div>
       </div>
       <CreateTodoForm />
+      <TodoFilter />
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-4">Görevlerim</h2>
         {todos.length === 0 ? (
@@ -39,53 +50,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="grid gap-4">
             {todos.map((todo) => (
-              <div
-                key={todo.id}
-                className="p-5 border rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow dark:bg-gray-800 dark:border:gray-700"
-              >
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3">
-                      <h3>{todo.title}</h3>
-                      <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider
-                        ${
-                          todo.priority === "HIGH"
-                            ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                            : todo.priority === "MEDIUM"
-                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                            : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        }`}
-                      >
-                        {todo.priority}
-                      </span>
-                    </div>
-                    {todo.description && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-                        {todo.description}
-                      </p>
-                    )}
-                    <div className="flex gap-4 pt-2 text-xs text-gray-400">
-                      <span className="flex items-center gap-1">
-                        📂 {todo.category}
-                      </span>
-                      {todo.dueDate && (
-                        <span className="flex items-center gap-1">
-                          📅{" "}
-                          {new Date(todo.dueDate).toLocaleDateString("tr-TR")}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div
-                      className={`w-3 h-3 rounded-full ${
-                        todo.isCompleted ? "bg-green-500" : "bg-gray-300"
-                      }`}
-                    />
-                  </div>
-                </div>
-              </div>
+              <TodoItem key={todo.id} todo={todo} />
             ))}
           </div>
         )}

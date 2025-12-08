@@ -26,7 +26,7 @@ export function ThemeToggle() {
         className={`rounded-full p-2 transition-all duration-200 ${
           resolvedTheme === "light"
             ? "bg-gray-100 text-yellow-500 shadow-inner"
-            : "text-gray-400 hover:text-gray-600 dark:hover:text:gray-300"
+            : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
         }`}
         aria-label="Light Mode"
       >
