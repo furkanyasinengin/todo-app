@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 Modern Todo App
 
-## Getting Started
+Kullanıcıların günlük görevlerini organize etmelerini, önceliklendirmelerini ve takip etmelerini sağlayan, Next.js tabanlı, tam kapsamlı ve çok dilli bir görev yönetim uygulaması.
 
-First, run the development server:
+## 🚀 Proje Hakkında
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Bu proje, modern web teknolojileri kullanılarak geliştirilmiş, performans ve kullanıcı deneyimi odaklı bir uygulamadır. Kullanıcılar hesap oluşturabilir, görevlerini kategorize edebilir, öncelik durumlarına göre filtreleyebilir ve bitiş tarihlerini dinamik olarak takip edebilirler.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Teknolojiler ve Mimari
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Proje geliştirilirken aşağıdaki teknoloji yığını (Tech Stack) kullanılmıştır:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend (Ön Yüz)
 
-## Learn More
+- **Framework:** Next.js 14 (App Router yapısı)
+- **Dil:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** **React Context API** (Özellikle Çoklu Dil Desteği ve Tema Yönetimi için aktif olarak kullanıldı)
+- **UI Components:** Modüler bileşen mimarisi
+- **Bildirimler:** React Hot Toast
 
-To learn more about Next.js, take a look at the following resources:
+### Backend & Veritabanı
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **API:** Next.js API Routes
+- **ORM:** Prisma
+- **Veritabanı:** PostgreSQL
+- **Kimlik Doğrulama:** JWT (JSON Web Token) & Bcrypt (Şifreleme)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✨ Temel Özellikler
 
-## Deploy on Vercel
+- **🔐 Güvenli Kimlik Doğrulama:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - Kullanıcı kayıt ve giriş işlemleri.
+  - JWT tabanlı güvenli oturum yönetimi.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **🌍 Çoklu Dil Desteği (i18n):**
+
+  - **Context API** kullanılarak geliştirilen dil değiştirme altyapısı.
+  - Türkçe, İngilizce, Almanca, İspanyolca dahil olmak üzere geniş dil desteği.
+  - Tamamen yerelleştirilmiş arayüz metinleri.
+
+- **📊 Gelişmiş Görev Yönetimi:**
+
+  - **CRUD:** Görev oluşturma, okuma, güncelleme ve silme.
+  - **Akıllı Tarih Hesaplama:** Kalan gün sayısı, "Bugün Son", "Gecikti" gibi dinamik durum bildirimleri.
+  - **Kategorilendirme:** İş, Kişisel, Alışveriş vb. kategorilere göre gruplama.
+  - **Önceliklendirme:** Düşük, Orta ve Yüksek (Acil) öncelik seviyeleri.
+
+- **🎨 Modern Arayüz:**
+  - **Responsive Tasarım:** Mobil ve masaüstü uyumlu.
+  - **Karanlık/Aydınlık Mod (Dark Mode):** Sistem temasına veya kullanıcı tercihine göre değişen tema desteği.
+  - **Dashboard:** Görev istatistiklerini (Tamamlanan, Bekleyen, Acil) gösteren özet paneli.

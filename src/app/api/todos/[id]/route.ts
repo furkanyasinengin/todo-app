@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 import { deleteTodo, updateTodo } from "@/services/todo.service";
+import { Priority } from "@prisma/client";
 
 const getAuthenticatedUser = async () => {
   const cookieStore = await cookies();
@@ -28,9 +29,17 @@ export const PATCH = async (
     const userId = await getAuthenticatedUser();
     const { id } = await params;
     const body = await req.json();
-    const { isCompleted } = body;
+    const { title, description, priority, category, dueDate, isCompleted } =
+      body;
 
-    await updateTodo(userId, id, isCompleted);
+    await updateTodo(userId, id, {
+      title,
+      category,
+      description,
+      priority: priority as Priority,
+      dueDate,
+      isCompleted,
+    });
     return NextResponse.json({ message: "Updated" }, { status: 200 });
   } catch {
     return NextResponse.json({ message: "Update failed" }, { status: 500 });

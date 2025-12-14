@@ -4,7 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+import Link from "next/link";
+import toast from "react-hot-toast";
+
+import { useLanguage } from "@/context/language-context";
+import { LanguageToggle } from "@/components/language-toggle";
 
 const registerSchema = z.object({
   name: z.string().min(3, "Name must be least 3 char."),
@@ -15,6 +20,7 @@ const registerSchema = z.object({
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const {
     register,
@@ -40,31 +46,26 @@ export default function RegisterPage() {
         throw new Error(result.message || "Register failed");
       }
 
-      console.log("Register success: ", result);
-
       router.push("/login");
-    } catch (error: unknown) {
-      let errorMessage = "Register Failed";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      console.error("Error: ", errorMessage);
-      alert("Register Failed: " + errorMessage);
+    } catch {
+      toast.error(
+        "Kayıt olurken bir hata meydana geldi. Lütfen daha sonra tekrar deneyiniz."
+      );
     }
   };
   return (
     <div className="relative flex min-h-screen justify-center items-center bg-gray-100 px-4 py-12 transition-colors duration-300 dark:bg-gray-900 sm:px-6 lg:px8">
-      <div className="absolute right-4 top-4">
+      <div className="absolute flex flex-column items-center right-4 top-4 gap-2">
+        <LanguageToggle />
         <ThemeToggle />
       </div>
       <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-10 shadow-2xl transition-colors duration-300 dark:bg-gray-800">
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Hesap Oluşturun
+            {t.auth.registerTitle}
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Devam etmek için bilgilerinizi giriniz
+            {t.auth.registerSubtitle}
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +75,7 @@ export default function RegisterPage() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                İsim
+                {t.auth.name}
               </label>
               <input
                 type="text"
@@ -87,7 +88,7 @@ export default function RegisterPage() {
                       : "border-gray-300 dark:border-gray-600"
                   }
                   dark:bg-gray-700 dark:text-white dark:placeholder-gray-400`}
-                placeholder="John Will"
+                placeholder={t.auth.namePlaceholder}
               />
               {errors.name && (
                 <p className="mt-1 text-xs text-red-500">
@@ -100,7 +101,7 @@ export default function RegisterPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Email Adresi
+                {t.auth.email}
               </label>
               <input
                 type="email"
@@ -113,7 +114,7 @@ export default function RegisterPage() {
                       : "border-gray-300 dark:border-gray-600"
                   }
                   dark:bg-gray-700 dark:text-white dark:placeholder-gray-400`}
-                placeholder="ornek@site.com"
+                placeholder={t.auth.emailPlaceholder}
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-500">
@@ -127,7 +128,7 @@ export default function RegisterPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Şifre
+                {t.auth.password}
               </label>
               <input
                 type="password"
@@ -155,9 +156,17 @@ export default function RegisterPage() {
               disabled={isSubmitting}
               className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed transition-colors duration-200"
             >
-              {isSubmitting ? "Kayıt olunuyor..." : "Kayıt ol"}
+              {isSubmitting
+                ? t.auth.registerButtonLoading
+                : t.auth.registerButton}
             </button>
           </div>
+          <p className="text-center">
+            {t.auth.hasAccount}{" "}
+            <Link className="hover:text-sky-300 hover:underline" href="/login">
+              {t.auth.loginButton}
+            </Link>
+          </p>
         </form>
       </div>
     </div>

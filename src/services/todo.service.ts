@@ -9,6 +9,15 @@ interface CreateTodoData {
   dueDate?: string | Date;
 }
 
+interface UpdateTodoData {
+  title?: string;
+  category?: string;
+  description?: string;
+  priority?: Priority;
+  dueDate?: string | Date;
+  isCompleted?: boolean;
+}
+
 export const getTodoList = async (
   userId: string,
   search?: string,
@@ -41,7 +50,7 @@ export const addTodoList = async (userId: string, data: CreateTodoData) => {
 export const updateTodo = async (
   userId: string,
   todoId: string,
-  isCompleted: boolean
+  data: UpdateTodoData
 ) => {
   return prisma.todo.updateMany({
     where: {
@@ -49,10 +58,12 @@ export const updateTodo = async (
       authorId: userId,
     },
     data: {
-      isCompleted,
+      ...data,
+      dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
     },
   });
 };
+
 export const deleteTodo = async (userId: string, todoId: string) => {
   return prisma.todo.deleteMany({
     where: {

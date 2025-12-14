@@ -18,10 +18,10 @@ model User {
   email String  @unique
   name  String?
   password  String
+  image String?
   createdAt DateTime @default(now())
-  
-  createdTodos Todo[] @relation("TodoAuthor")
-  assignedTodos Todo[] @relation("TodoAssignees")
+  updatedAt     DateTime  @updatedAt
+  todos Todo[]
 }
 
 model Todo {
@@ -35,6 +35,5 @@ model Todo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   authorId  String
-  author    User    @relation("TodoAuthor",fields: [authorId], references: [id])
-  assignees User[] @relation("TodoAssignees")
+  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }

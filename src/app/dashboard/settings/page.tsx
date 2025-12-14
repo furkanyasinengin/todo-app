@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verifyJwt } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
-import DashboardShell from "@/components/dashboard/dashboard-shell";
+import SettingsClient from "@/components/settings/settings-client";
 
 export const metadata = {
-  title: "Todo App | Dashboard",
+  title: "Todo App | Settings",
   description: "Advanced Todo Application",
 };
 
@@ -21,21 +21,22 @@ async function getUser() {
 
   const user = await prisma.user.findUnique({
     where: { id: decoded.id as string },
-    select: { name: true, email: true, image: true },
+    select: {
+      name: true,
+      email: true,
+      image: true,
+    },
   });
 
   return user;
 }
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function SettingsPage() {
   const user = await getUser();
 
   if (!user) {
     redirect("/login");
   }
-  return <DashboardShell user={user}>{children}</DashboardShell>;
+
+  return <SettingsClient user={user} />;
 }
